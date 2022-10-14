@@ -20,7 +20,9 @@ class Evaluator(object):
                 is_flip, devices, verbose=False, save_path=None, show_image=False):
         self.eval_time = 0
         self.dataset = dataset
-        self.ndata = self.dataset.get_length()
+        # self.ndata = self.dataset.get_length()
+        self.ndata = self.dataset.__len__()
+
         self.class_num = class_num
         self.norm_mean = norm_mean
         self.norm_std = norm_std
@@ -79,8 +81,8 @@ class Evaluator(object):
             else:
                 models = [None]
 
-        results = open(log_file, 'a')
-        link_file(log_file, log_file_link)
+        # results = open(log_file, 'a')
+        # link_file(log_file, log_file_link)
 
         for model in models:
             logger.info("Load Model: %s" % model)
@@ -90,12 +92,12 @@ class Evaluator(object):
             else:
                 result_line = self.multi_process_evaluation()
 
-            results.write('Model: ' + model + '\n')
-            results.write(result_line)
-            results.write('\n')
-            results.flush()
+        #     results.write('Model: ' + model + '\n')
+        #     results.write(result_line)
+        #     results.write('\n')
+        #     results.flush()
 
-        results.close()
+        # results.close()
 
 
     def single_process_evalutation(self):
@@ -309,12 +311,14 @@ class Evaluator(object):
         processed_pred = np.zeros((ori_rows, ori_cols, self.class_num))
 
         for s in self.multi_scales:
+            # print(img)
             img_scale = cv2.resize(img, None, fx=s, fy=s, interpolation=cv2.INTER_LINEAR)
             if len(modal_x.shape) == 2:
                 modal_x_scale = cv2.resize(modal_x, None, fx=s, fy=s, interpolation=cv2.INTER_NEAREST)
             else:
                 modal_x_scale = cv2.resize(modal_x, None, fx=s, fy=s, interpolation=cv2.INTER_LINEAR)
 
+            print(img_scale.shape)
             new_rows, new_cols, _ = img_scale.shape
             processed_pred += self.scale_process_rgbX(img_scale, modal_x_scale, (ori_rows, ori_cols),
                                                         crop_size, stride_rate, device)

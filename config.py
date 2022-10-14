@@ -18,18 +18,18 @@ C.abs_dir = osp.realpath(".")
 
 # Dataset config
 """Dataset Path"""
-C.dataset_name = 'NYUDepthv2'
-C.dataset_path = osp.join(C.root_dir, 'datasets', 'NYUDepthv2')
-C.rgb_root_folder = osp.join(C.dataset_path, 'RGB')
-C.rgb_format = '.jpg'
+C.dataset_name = 'ScanNet'
+C.dataset_path = "../data/ScanNet"
+C.rgb_root_folder = osp.join(C.dataset_path, 'ScanNet/imgs/scene0000_00')
+C.rgb_format = '.png'
 C.gt_root_folder = osp.join(C.dataset_path, 'Label')
 C.gt_format = '.png'
 C.gt_transform = True
 # True when label 0 is invalid, you can also modify the function _transform_gt in dataloader.RGBXDataset
 # True for most dataset valid, Faslse for MFNet(?)
-C.x_root_folder = osp.join(C.dataset_path, 'HHA')
-C.x_format = '.jpg'
-C.x_is_single_channel = False # True for raw depth, thermal and aolp/dolp(not aolp/dolp tri) input
+C.x_root_folder = osp.join(C.dataset_path, 'ScanNet/depths/scene0000_00')
+C.x_format = '.npy'
+C.x_is_single_channel = True # True for raw depth, thermal and aolp/dolp(not aolp/dolp tri) input
 C.train_source = osp.join(C.dataset_path, "train.txt")
 C.eval_source = osp.join(C.dataset_path, "test.txt")
 C.is_test = False
@@ -50,7 +50,7 @@ C.norm_std = np.array([0.229, 0.224, 0.225])
 
 """ Settings for network, this would be different for each kind of model"""
 C.backbone = 'mit_b2' # Remember change the path below.
-C.pretrained_model = C.root_dir + '/pretrained/segformer/mit_b2.pth'
+C.pretrained_model = C.root_dir + '/pretrained/SCANET_CMX+Segformer-B2.pth'
 C.decoder = 'MLPDecoder'
 C.decoder_embed_dim = 512
 C.optimizer = 'AdamW'
